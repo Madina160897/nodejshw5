@@ -1,5 +1,6 @@
 const carsBlock = document.querySelector(".cars_block");
-const createCarBtn = document.querySelector("#create_car_btn")
+const createCarBtn = document.querySelector("#create_car_btn");
+const putCarBtn = document.querySelector("#put_car_btn");
 
 const BASE_URL = "http://localhost:8080";
 const loadData = async () => {
@@ -41,3 +42,28 @@ const deleteCar = id => {
         .then(() => loadData())
         .catch(() => alert("Car delete error"));
 }
+
+putCarBtn.addEventListener("click", () => {
+    const responseCars = fetch(BASE_URL + "/cars");
+    const cars = responseCars.json();
+
+    const changeCarId = document.querySelector("# put_car_id").value;
+    const changeCarModel = document.querySelector("#put_car_model").value;
+    const someData = {
+        id: changeCarId,
+        model: changeCarModel,
+    }
+
+    const putMethod = {
+        method: 'PUT',
+        headers: {
+         'Content-type': 'application/json; charset=UTF-8' 
+        },
+        body: JSON.stringify(someData)
+       }
+       
+       fetch(BASE_URL + "/cars", putMethod)
+       .then(cars = responseCars.json())
+       .then(() => loadData())
+       .catch(() => alert("Car create error"))
+})
